@@ -41,16 +41,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createCellsRouter = void 0;
 var express_1 = __importDefault(require("express"));
+var promises_1 = __importDefault(require("fs/promises"));
+var path_1 = __importDefault(require("path"));
 var createCellsRouter = function (filename, dir) {
     var router = express_1.default.Router();
+    router.use(express_1.default.json());
+    var fullPath = path_1.default.join(dir, filename);
     router.get("/cells", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var result, err_1;
         return __generator(this, function (_a) {
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 6]);
+                    return [4 /*yield*/, promises_1.default.readFile(fullPath, { encoding: "utf8" })];
+                case 1:
+                    result = _a.sent();
+                    res.send(JSON.parse(result));
+                    return [3 /*break*/, 6];
+                case 2:
+                    err_1 = _a.sent();
+                    if (!(err_1.code === "ENOENT")) return [3 /*break*/, 4];
+                    // add code to create a file and add default cells
+                    return [4 /*yield*/, promises_1.default.writeFile(fullPath, "[]", "utf-8")]; // '[]' is a default cell for now
+                case 3:
+                    // add code to create a file and add default cells
+                    _a.sent(); // '[]' is a default cell for now
+                    res.send([]);
+                    return [3 /*break*/, 5];
+                case 4: throw err_1;
+                case 5: return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
+            }
         });
     }); });
     router.post("/cells", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var cells;
         return __generator(this, function (_a) {
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    cells = req.body.cells;
+                    // write the cells into the file
+                    return [4 /*yield*/, promises_1.default.writeFile(fullPath, JSON.stringify(cells), "utf8")];
+                case 1:
+                    // write the cells into the file
+                    _a.sent();
+                    res.send({
+                        status: "OK",
+                    });
+                    return [2 /*return*/];
+            }
         });
     }); });
     return router;
