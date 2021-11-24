@@ -12,6 +12,7 @@ var serve = function (port, filename, dir, useProxy) {
     var app = (0, express_1.default)();
     // naive solution since we can't reference directory in npm registry
     // app.use(express.static("../../local-client/build"))
+    app.use((0, cells_1.createCellsRouter)(filename, dir));
     if (useProxy) {
         app.use((0, http_proxy_middleware_1.createProxyMiddleware)({
             target: "http://localhost:3000",
@@ -23,7 +24,6 @@ var serve = function (port, filename, dir, useProxy) {
         var packagePath = require.resolve("local-client/build/index.html");
         app.use(express_1.default.static(path_1.default.dirname(packagePath)));
     }
-    app.use((0, cells_1.createCellsRouter)(filename, dir));
     return new Promise(function (resolve, reject) {
         app.listen(port, resolve).on("error", reject);
     });
