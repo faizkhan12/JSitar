@@ -1,8 +1,8 @@
-import { serve } from "@jsitar/local-api"
-import { Command } from "commander"
-import path from "path"
+import { serve } from "@jsitar/local-api";
+import { Command } from "commander";
+import path from "path";
 
-const isProduction = process.env.NODE_ENV === "production"
+const isProduction = process.env.NODE_ENV === "production";
 // square brackets are optional values
 // angle brackets are compulsory
 export const serveCommand = new Command()
@@ -11,22 +11,22 @@ export const serveCommand = new Command()
   .option("-p, --port <number>", "port to run server on", "4005")
   .action(async (filename = "readme.js", options: { port: string }) => {
     try {
-      const dir = path.join(process.cwd(), path.dirname(filename))
+      const dir = path.join(process.cwd(), path.dirname(filename));
       await serve(
         parseInt(options.port),
         path.basename(filename),
         dir,
         !isProduction
-      )
+      );
       console.log(
         `Opened ${filename} with port ${options.port}. Navigate to http://localhost:${options.port} to edit the file`
-      )
-    } catch (err) {
+      );
+    } catch (err: any) {
       if (err.code === "EADDRINUSE") {
-        console.log("Port is in use. Try running it in different Port.")
+        console.log("Port is in use. Try running it in different Port.");
       } else {
-        console.log("Something wrong ", err.message)
+        console.log("Something wrong ", err.message);
       }
-      process.exit(1)
+      process.exit(1);
     }
-  })
+  });

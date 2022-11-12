@@ -21,10 +21,10 @@
     "@jsitar/local-client": "^1.0.0"
   },
   "devDependencies": {
-    "@jsitar/local-api": "^1.0.0",
     "@types/node": "^16.11.0",
-    "commander": "^8.2.0",
     "esbuild": "0.8.26",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "@jsitar/local-api": "^1.0.0",
+    "commander": "^8.2.0"
   }
 }
