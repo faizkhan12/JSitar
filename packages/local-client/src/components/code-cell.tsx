@@ -17,6 +17,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const bundle = useTypedSelector((state) => state.bundles[cell.id])
   const cumulativeCode = useCumulativeCode(cell.id)
   useEffect(() => {
+    console.log(cell.content)
     if (!bundle) {
       createBundle(cell.id, cumulativeCode)
       return
@@ -44,7 +45,12 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       >
         <Resizable direction='horizontal'>
           <CodeEditor
-            initialValue={cell.content}
+            initialValue={
+              !cell.content
+                ? "// Use Print() to print the values in preview => Ex - print(10) will preview 10 in the preview sceeen"
+                : cell.content
+            }
+            // initialValue={cell.content}
             onChange={(value) => updateCell(cell.id, value)}
           />
         </Resizable>
